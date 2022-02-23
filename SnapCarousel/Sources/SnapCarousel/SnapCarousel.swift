@@ -10,14 +10,19 @@ import Combine
 
 struct SnapCarousel<Content: View & Identifiable>: View {
     var cardsContent: [Content]
+    let uiState: UIState
     
     private var cardWidth: CGFloat
     private var cardHeight: CGFloat
     
-    public init(cardWidth: CGFloat, cardHeight: CGFloat, items: [Content]) {
+    public init(cardWidth: CGFloat,
+                cardHeight: CGFloat,
+                items: [Content],
+                uiState: UIState = UIState()) {
         self.cardWidth = cardWidth
         self.cardHeight = cardHeight
         self.cardsContent = items
+        self.uiState = uiState
     }
     
     var body: some View {
@@ -30,6 +35,9 @@ struct SnapCarousel<Content: View & Identifiable>: View {
                 }
             }
         }
+        .gesture(DragGesture().onEnded { value in
+            
+        })
     }
 }
 
@@ -44,6 +52,10 @@ struct SnapCarousel_Previews: PreviewProvider {
         let views = data.map { CardContent(data: $0) }
         SnapCarousel<CardContent>(cardWidth: width, cardHeight: height, items: views)
     }
+}
+
+struct UIState {
+    var activeCard: Int?
 }
 
 struct DataModel {
