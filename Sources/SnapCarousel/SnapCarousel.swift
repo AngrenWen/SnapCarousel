@@ -14,13 +14,16 @@ struct SnapCarousel<Content: View & Identifiable>: View {
     
     private var cardWidth: CGFloat
     private var cardHeight: CGFloat
+    private var cardDistance: CGFloat
     
     public init(cardWidth: CGFloat,
                 cardHeight: CGFloat,
+                cardDistance: CGFloat = 10.0,
                 items: [Content],
                 uiState: UIState = UIState()) {
         self.cardWidth = cardWidth
         self.cardHeight = cardHeight
+        self.cardDistance = cardDistance
         self.cardsContent = items
         self.uiState = uiState
     }
@@ -36,8 +39,13 @@ struct SnapCarousel<Content: View & Identifiable>: View {
             }
         }
         .gesture(DragGesture().onEnded { value in
-            
+            let endPointX = value.location.x
+            print("\(card(at: endPointX))")
         })
+    }
+    
+    func card(at location: CGFloat) -> CGFloat {
+        location / (cardWidth + cardDistance)
     }
 }
 
